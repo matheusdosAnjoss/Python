@@ -5,14 +5,17 @@ class funcionario:
     """
     Docstring para funcionario
     """
+    #atributo de clase
+    empresa = 'HRF AGRICOLA'
 
+    #atributo de instancia
     def __init__(self, nome, setor, cargo):
         self.nome = nome
         self.setor = setor
         self.cargo = cargo
     
     def __str__(self):
-        return f'Olá, sou {self.nome} e sou {self.cargo} do setor de {self.setor}'
+        return f'Olá, sou {self.nome} e sou {self.cargo} do setor de {self.setor} da empresa {funcionario.empresa}'
 
 print(linha())
 c1 = funcionario(nome='Maria', setor='Administração', cargo='Diretora')
