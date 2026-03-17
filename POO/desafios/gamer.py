@@ -1,5 +1,6 @@
 from rich import print
 from rich.panel import Panel
+from rich import inspect
 from rich.traceback import install
 install()
 
@@ -14,7 +15,7 @@ class gamer:
 
     def ficha(self):
         self.jogos.sort()
-        jogosFormatados = "\n".join(f"- {jogo}" for jogo in self.jogos)
+        jogosFormatados = "\n".join(f"- [green]{jogo}" for jogo in self.jogos)
 
         caixa = Panel(f"Nome Real: {self.nome}\nJogos favoritos:\n{jogosFormatados}", title=f"Jogador <{self.nick}>", width=35)
         print(caixa)
