@@ -23,7 +23,7 @@ while True:
         for i, livro in enumerate(blibioteca):
             print(f'{i+1} - {livro.titulo} | {livro.autor}')
         print('='*20)
-        
+
     elif escolha == '3':
         break
     else:
@@ -31,4 +31,3 @@ while True:
         print("ERRO tente novamente!")
         print('='*20)
 
-print(blibioteca)
