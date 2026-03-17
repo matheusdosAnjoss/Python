@@ -9,8 +9,8 @@ class gamer:
         self.nick = nick
         self.jogos = []
     
-    def add_favoritos(self, jogo):
-        self.jogos.append(jogo)
+    def add_favoritos(self, JogoFavorito):
+        self.jogos.append(JogoFavorito)
 
     def ficha(self):
         self.jogos.sort()
