@@ -1,12 +1,22 @@
-from rich import inspect
+from abc import ABC, abstractmethod #classe abstrato
 
-class Pessoa:  #Super Class #HERANÇA
+# --- CLASSES ABSTRATAS (O CONTRATO) ---
+# 1. É a "mãe mandona": ela define as regras, mas não coloca a mão na massa.
+# 2. Proibido criar objetos: você não cria um "Animal", cria um "Cão". Se tentar, o Python trava.
+# 3. @abstractmethod: é o "voto de compromisso". A filha que herdar TEM que escrever esse método.
+# 4. Organização total: garante que suas classes diferentes falem a mesma língua (mesmos métodos).
+
+class Pessoa(ABC):  #Super Class
     def __init__(self, nome="", idade= 0):
         self.nome = nome
         self.idade = idade
 
     def FazerAniversario(self): #METODO
         self.idade += 1
+
+    @abstractmethod #Metodo abstrato
+    def estudar(self):
+        pass
 
 
 class Aluno(Pessoa):
@@ -18,6 +28,10 @@ class Aluno(Pessoa):
     def FazerMatricula(self): #METODO
         print(f"{self.nome} acabou de fazer matricula")
 
+    def estudar(self):
+        print(f'O Aluno {self.nome} estudando {self.curso} na turma: {self.turma}')
+    
+
 
 class Professor(Pessoa):
     def __init__(self, nome, idade, especialidade, nivel):
@@ -27,7 +41,11 @@ class Professor(Pessoa):
 
     def DarAula(self): #METODO
         print(f"Prof.{self.nome} Especializado em {self.especialidade} com nivel de {self.nivel}")
-        
+    
+    def estudar(self):
+        print(f'O professor {self.nome} estudar {self.especialidade}')
+
+
 
 class Funcionario(Pessoa):
     def __init__(self, nome, idade, cargo, setor):
@@ -38,19 +56,5 @@ class Funcionario(Pessoa):
     def BaterPonto(self): #METODO
         print(f'{self.nome} acabou de bater o ponto!')
 
-
-
-a1 = Aluno(nome="Matheus", idade=21, curso="TI", turma="Sala b2")
-a1.FazerAniversario()
-a1.FazerMatricula()
-#inspect(a1)
-
-
-p1 = Professor("Jose", 30, "Back-end", "Doutorado")
-#inspect(p1)
-p1.DarAula()
-
-
-f1 = Funcionario("Ana", 20, "Assistente", "RH")
-#inspect(f1)
-f1.BaterPonto()
+    def estudar(self):
+        print(f'A funcionario {self.nome} estudar {self.setor}')
