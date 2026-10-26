@@ -7,17 +7,25 @@ while not busca:
     busca = str(input("Quem você está procurando? ")).strip()
 
 try:
+    # Conecta ao arquivo de banco de dados 'meubanco.db'.
+    # O 'with' garante que a conexão será fechada automaticamente ao final.
     with sqlite3.connect("meubanco.db") as banco:
         cursor = banco.cursor()
 
+        # Executa a busca no banco usando 'LIKE' e '?' para evitar ataques de SQL Injection.
+        # O '%busca%' permite encontrar nomes que contenham o termo digitado em qualquer parte.
         cursor.execute("SELECT * FROM pessoas_detalhado WHERE nome LIKE ?", (f"%{busca}%",))
 
-        total = 0
-        hoje = date.today()
+        total = 0 # Contador de registros encontrados
+        hoje = date.today() # Pega a data atual do sistema
+
+        # Percorre cada registro retornado pelo banco de dados
+        # enumerate(..., start=1) conta os itens a partir de 1 e atualiza a variável 'total'
         for total, pessoa in enumerate(cursor , start=1):
             # print(f'{pessoa[1]} {pessoa[2]} nasceu em {pessoa[3]}')
             data_nasc = datetime.strptime(pessoa[3], "%Y-%m-%d").date()
 
+            # Subtrai o ano atual pelo ano de nascimento e ajusta em -1 caso a pessoa ainda não tenha feito aniversário este ano
             idade = hoje.year - data_nasc.year - ((hoje.month, hoje.day) < (data_nasc.month, data_nasc.day))
 
             data_formatada = data_nasc.strftime("%d/%m/%Y")
