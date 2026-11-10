@@ -1,3 +1,7 @@
+
+from crud import cadastro_em_massa, cadastro_pessoas
+
+
 if __package__:
     from .crud import criar_banco
 else:
@@ -16,6 +20,8 @@ def exibir_menu():
     print("=" * 30)
 
 def main():
+    # cadastro_em_massa()
+
     if not criar_banco():
         print("Algum problema aconteceu ao criar o banco")
         raise SystemExit  
@@ -28,7 +34,7 @@ def main():
         match opcao:
             case "1":
                 print("\n-> Opção selecionada: Cadastrar pessoa")
-                # Chame aqui sua função de cadastro, ex: cadastrar_pessoa()
+                cadastro_pessoas()
             case "2":
                 print("\n-> Opção selecionada: Listar pessoas")
                 # Chame aqui sua função de listagem, ex: listar_pessoas()
