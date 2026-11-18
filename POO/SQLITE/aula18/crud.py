@@ -1,4 +1,12 @@
 import sqlite3
+import sqlite3
+from rich import box
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
+
+
 
 NOME_BANCO = 'cadastro.db'
 
@@ -62,3 +70,88 @@ def cadastro_pessoas() -> bool:
     except sqlite3.Error as erro:
         print(f'[ERRO] Falha no cadastro do banco: {erro}')
         return False
+
+def listar_pessoas() -> bool:
+    print(f"\n --- LISTAGEM DE PESSOAS CADASTRADAS ---")
+    try:
+        with sqlite3.connect(NOME_BANCO) as db:
+            cur = db.cursor()
+            cur.execute("SELECT cod, nome, altura FROM pessoas ORDER BY nome;")
+            primeiro = cur.fetchone()
+
+            if not primeiro:
+                print(f"Nenhuma pessoa foi cadastada ate agora.")
+                return True
+
+            # 1. Configura a tabela
+            table = Table(box=box.SIMPLE_HEAVY, show_edge=False)
+            table.add_column("COD", justify="left", width=6, style="cyan")
+            table.add_column("NOME", justify="left", width=28, style="white")
+            table.add_column("ALTURA", justify="right", width=8, style="green")
+
+            # 2. Adiciona o primeiro registro (buscado pelo fetchone)
+            vcod, vnome, valtura = primeiro
+            table.add_row(str(vcod), vnome, f"{valtura:.2f}m")
+
+            # 3. Adiciona o restante dos registros direto do cursor
+            for vcod, vnome, valtura in cur:
+                table.add_row(str(vcod), vnome, f"{valtura:.2f}m")
+
+            # 4. Exibe a tabela no terminal
+            console.print()
+            console.print(table)
+            
+            return True
+    except sqlite3.Error as erro:
+        print(f'Falha ao acessar o banco: {erro}')
+        return 
+
+def atualizar_pessoas() -> bool:
+    pass
+
+def excluir_pessoas() -> bool:
+    pass
+
+
+def buscar_pessoa_por_nome() -> bool:
+    print(f"\n --- BUSCA DE PESSOA POR NOME --- ")
+
+    termo = input("Digite o nome: ")
+
+    if not termo:
+        print("AVISO Nenhum termo foi informado")
+        return False
+
+    try:
+        with sqlite3.connect(NOME_BANCO) as db:
+            cur = db.cursor()
+            cur.execute("SELECT cod, nome, altura FROM pessoas WHERE nome LIKE ? ORDER BY nome;", (f"%{termo}%",))
+
+            primeiro = cur.fetchone()
+            
+            if not primeiro:
+                print(f"Nenhuma pessoa foi encontrada com {termo}")
+                return True
+            
+            # 1. Configura a tabela
+            table = Table(box=box.SIMPLE_HEAVY, show_edge=False)
+            table.add_column("COD", justify="left", width=6, style="cyan")
+            table.add_column("NOME", justify="left", width=28, style="white")
+            table.add_column("ALTURA", justify="right", width=8, style="green")
+            
+            # 2. Adiciona o primeiro registro (buscado pelo fetchone)
+            vcod, vnome, valtura = primeiro
+            table.add_row(str(vcod), vnome, f"{valtura:.2f}m")
+            
+            # 3. Adiciona o restante dos registros direto do cursor
+            for vcod, vnome, valtura in cur:
+                table.add_row(str(vcod), vnome, f"{valtura:.2f}m")
+            
+            # 4. Exibe a tabela no terminal
+            console.print()
+            console.print(table)
+
+            return True
+    except sqlite3.Error as erro:
+        print(f'Falha ao buscar mo banco: {erro}')
+        return

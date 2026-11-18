@@ -1,5 +1,5 @@
 
-from crud import cadastro_em_massa, cadastro_pessoas
+from crud import cadastro_em_massa, cadastro_pessoas, listar_pessoas, atualizar_pessoas, excluir_pessoas, buscar_pessoa_por_nome
 
 
 if __package__:
@@ -36,17 +36,24 @@ def main():
                 print("\n-> Opção selecionada: Cadastrar pessoa")
                 cadastro_pessoas()
             case "2":
-                print("\n-> Opção selecionada: Listar pessoas")
                 # Chame aqui sua função de listagem, ex: listar_pessoas()
+                if not listar_pessoas():
+                    print("ERRO Não foi possivel atualizar o cadastro")
+
+                listar_pessoas()
+
             case "3":
                 print("\n-> Opção selecionada: Atualizar pessoa")
                 # Chame aqui sua função de atualização, ex: atualizar_pessoa()
             case "4":
                 print("\n-> Opção selecionada: Excluir pessoa")
-                # Chame aqui sua função de exclusão, ex: excluir_pessoa()
+                # Chame aqui sua função de exclusão
             case "5":
-                print("\n-> Opção selecionada: Busca por nome")
-                # Chame aqui sua função de busca, ex: buscar_pessoa()
+                # Chame aqui sua função de busca
+                if not listar_pessoas():
+                    print("ERRO Não foi possivel buscar o nome dessa pessoa")
+                
+                buscar_pessoa_por_nome()
             case "0":
                 print("\nSaindo do sistema... Até logo!")
                 break
